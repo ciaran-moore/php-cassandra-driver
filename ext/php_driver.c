@@ -104,7 +104,7 @@ php_le_php_driver_cluster()
   return le_php_driver_cluster_res;
 }
 static void
-php_driver_cluster_dtor(php8_zend_resource rsrc)
+php_driver_cluster_dtor(php8_zend_resource rsrc TSRMLS_DC)
 {
   CassCluster *cluster = (CassCluster*) rsrc->ptr;
 
@@ -122,7 +122,7 @@ php_le_php_driver_session()
   return le_php_driver_session_res;
 }
 static void
-php_driver_session_dtor(php8_zend_resource rsrc)
+php_driver_session_dtor(php8_zend_resource rsrc TSRMLS_DC)
 {
   php_driver_psession *psession = (php_driver_psession*) rsrc->ptr;
 
@@ -142,7 +142,7 @@ php_le_php_driver_prepared_statement()
   return le_php_driver_prepared_statement_res;
 }
 static void
-php_driver_prepared_statement_dtor(php8_zend_resource rsrc)
+php_driver_prepared_statement_dtor(php8_zend_resource rsrc TSRMLS_DC)
 {
   php_driver_pprepared_statement *preparedStmt = (php_driver_pprepared_statement*) rsrc->ptr;
 
@@ -330,33 +330,30 @@ throw_invalid_argument(zval *object,
     char* cls_name = NULL;
 #endif
 
-size_t cls_len;
-
-
-    zend_string* str  = Z_OBJ_HANDLER_P(object, get_class_name)(Z_OBJ_P(object) TSRMLS_CC);
+    size_t cls_len;
+    zend_string* str = Z_OBJ_HANDLER_P(object, get_class_name)(Z_OBJ_P(object));
     cls_name = str->val;
     cls_len = str->len;
 
     if (cls_name) {
-      zend_throw_exception_ex(php_driver_invalid_argument_exception_ce, 0 TSRMLS_CC,
+      zend_throw_exception_ex(php_driver_invalid_argument_exception_ce, 0,
                               "%s must be %s, an instance of %.*s given",
                               object_name, expected_type, (int)cls_len, cls_name);
       zend_string_release(str);
     } else {
-      zend_throw_exception_ex(php_driver_invalid_argument_exception_ce, 0 TSRMLS_CC,
+      zend_throw_exception_ex(php_driver_invalid_argument_exception_ce, 0,
                               "%s must be %s, an instance of Unknown Class given",
                               object_name, expected_type);
     }
-  } else if (Z_TYPE_P(object) == IS_STRING) {
-    zend_throw_exception_ex(php_driver_invalid_argument_exception_ce, 0 TSRMLS_CC,
-                            "%s must be %s, '%Z' given",
-                            object_name, expected_type, object);
   } else {
-    zend_throw_exception_ex(php_driver_invalid_argument_exception_ce, 0 TSRMLS_CC,
-                            "%s must be %s, %Z given",
-                            object_name, expected_type, object);
+    zend_string *str = zval_get_string(object);
+    zend_throw_exception_ex(php_driver_invalid_argument_exception_ce, 0,
+                            "%s must be %s, %s given",
+                            object_name, expected_type, ZSTR_VAL(str));
+    zend_string_release(str);
   }
 }
+
 
 PHP_INI_MH(OnUpdateLogLevel)
 {

@@ -481,7 +481,7 @@ void php_driver_define_UserTypeValue()
   php_driver_user_type_value_ce->ce_flags |= ZEND_ACC_FINAL;
   php_driver_user_type_value_ce->create_object = php_driver_user_type_value_new;
 
-  zend_class_implements(php_driver_user_type_value_ce TSRMLS_CC, 2, spl_ce_Countable, zend_ce_iterator);
+  zend_class_implements(php_driver_user_type_value_ce TSRMLS_CC, 2, zend_ce_countable, zend_ce_iterator);
 
   php_driver_user_type_value_handlers.hash_value = php_driver_user_type_value_hash_value;
   php_driver_user_type_value_handlers.std.clone_obj = NULL;

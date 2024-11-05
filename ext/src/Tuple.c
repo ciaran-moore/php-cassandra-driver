@@ -258,7 +258,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo__construct, 0, ZEND_RETURN_VALUE, 1)
   ZEND_ARG_INFO(0, types)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_value, 0, ZEND_RETURN_VALUE, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_values, 0, ZEND_RETURN_VALUE, 1)
   ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
@@ -295,7 +295,7 @@ ZEND_END_ARG_INFO()
 static zend_function_entry php_driver_tuple_methods[] = {
   PHP_ME(Tuple, __construct, arginfo__construct, ZEND_ACC_CTOR|ZEND_ACC_PUBLIC)
   PHP_ME(Tuple, type, arginfo_none, ZEND_ACC_PUBLIC)
-  PHP_ME(Tuple, values, arginfo_none, ZEND_ACC_PUBLIC)
+  PHP_ME(Tuple, values, arginfo_values, ZEND_ACC_PUBLIC)
   PHP_ME(Tuple, set, arginfo_index_value, ZEND_ACC_PUBLIC)
   PHP_ME(Tuple, get, arginfo_index, ZEND_ACC_PUBLIC)
   /* Countable */
