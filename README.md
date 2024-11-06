@@ -49,8 +49,8 @@ Or you can build yourself
         -DCASS_USE_TIMERFD=ON \
         -DCASS_USE_LIBSSH2=ON -DCASS_USE_ZLIB=ON \
         -DCMAKE_C_FLAGS="-fPIC" \
-        -DCMAKE_CXX_FLAGS="-fPIC \
-        -Wno-error=redundant-move" \
+        -DCMAKE_CXX_FLAGS="-fPIC" \
+        -Wno-error="redundant-move" \
         -DCMAKE_BUILD_TYPE="RelWithInfo" \
         -DCMAKE_INSTALL_PREFIX=/usr/local \
         -DCMAKE_INSTALL_LIBDIR=lib \
