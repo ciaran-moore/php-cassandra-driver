@@ -44,7 +44,8 @@ fi
 
 echo "Compiling and installing the extension..."
 cd $BASE_DIR/ext && phpize
-
+# Ensure that conifgure is using latest autoconf
+cd $BASE_DIR/ext && autoupdate
 cd $BASE_DIR/ext && ./configure
 cd $BASE_DIR/ext && make
 cd $BASE_DIR/ext && sudo make install
